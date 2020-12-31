@@ -8,13 +8,11 @@
 %%%-------------------------------------------------------------------
 -module(emqx_backend_opentsdb).
 
--export(['$logger_header'/0]).
+-export([logger_header/0]).
 
 -include("../include/emqx_backend_opentsdb.hrl").
-
-%% -include("/emqx/include/emqx.hrl").
-
-%% -include("emqx/include/logger.hrl").
+-include("../include/emqx.hrl").
+-include("../include/logger.hrl").
 
 -export([pool_name/1]).
 
@@ -74,7 +72,7 @@ on_message_publish(Message = #message{topic = Topic}, {Filter, Pool, Templates})
         begin
           logger:log(debug, #{}, #{report_cb =>
             fun (_) ->
-              {'$logger_header'()
+              {logger_header()
                 ++
                 "Build OpenTSDB point failed: no_available_tem"
                 "plate",
@@ -86,7 +84,7 @@ on_message_publish(Message = #message{topic = Topic}, {Filter, Pool, Templates})
         begin
           logger:log(error, #{}, #{report_cb =>
             fun (_) ->
-              {'$logger_header'()
+              {logger_header()
                 ++
                 "Build OpenTSDB point failed: ~p, ~p",
                 [Reason,
@@ -127,4 +125,4 @@ l2a(L) -> erlang:list_to_atom(L).
 
 b2a(B) -> erlang:binary_to_atom(B, utf8).
 
-'$logger_header'() -> "".
+logger_header() -> "".

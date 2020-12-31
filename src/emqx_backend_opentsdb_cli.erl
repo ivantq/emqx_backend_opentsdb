@@ -10,12 +10,11 @@
 
 -module(emqx_backend_opentsdb_cli).
 
-%%-export(['$logger_header'/0]).
+-export([logger_header/0]).
 -include("../include/emqx_backend_opentsdb.hrl").
 
-%% -include("emqx/include/emqx.hrl").
-
-%% -include("/emqx/include/logger.hrl").
+-include("../include/emqx.hrl").
+-include("../include/logger.hrl").
 
 -export([put/2, put/3, get_templates/0, build_points/2]).
 
@@ -34,7 +33,7 @@ put(Pool, DataPoints) ->
               #{},
               #{report_cb =>
               fun (_) ->
-                {'$logger_header'()
+                {logger_header()
                   ++
                   "Write ~p to OpenTSDB failed: ~p",
                   [DataPoints,
@@ -52,7 +51,7 @@ put(Pool, DataPoints) ->
               #{},
               #{report_cb =>
               fun (_) ->
-                {'$logger_header'()
+                {logger_header()
                   ++
                   "Write point ~p to OpenTSDB successfully",
                   [DataPoints]}
@@ -76,7 +75,7 @@ put(Pool, DataPoints, Options) ->
               #{},
               #{report_cb =>
               fun (_) ->
-                {'$logger_header'()
+                {logger_header()
                   ++
                   "Write ~p to OpenTSDB failed: ~p",
                   [DataPoints,
@@ -94,7 +93,7 @@ put(Pool, DataPoints, Options) ->
               #{},
               #{report_cb =>
               fun (_) ->
-                {'$logger_header'()
+                {logger_header()
                   ++
                   "Write point ~p to OpenTSDB successfully",
                   [DataPoints]}
@@ -122,7 +121,7 @@ get_templates() ->
           #{},
           #{report_cb =>
           fun (_) ->
-            {'$logger_header'() ++
+            {logger_header() ++
               "Read ~p failed due to: ~p",
               [FilePath, posix_errno(Reason)]}
           end,
@@ -137,7 +136,7 @@ get_templates() ->
           #{},
           #{report_cb =>
           fun (_) ->
-            {'$logger_header'() ++ "~p is empty",
+            {logger_header() ++ "~p is empty",
               [FilePath]}
           end,
             mfa =>
@@ -196,7 +195,7 @@ try_decode(Data) ->
           #{},
           #{report_cb =>
           fun (_) ->
-            {'$logger_header'() ++
+            {logger_header() ++
               "Decode ~p failed due to: ~p",
               [Data, {Reason, Stacktrace}]}
           end,
@@ -363,4 +362,4 @@ posix_errno(enomem) ->
   "of the file";
 posix_errno(_) -> "Unknown error".
 
-'$logger_header'() -> "".
+logger_header() -> "".
